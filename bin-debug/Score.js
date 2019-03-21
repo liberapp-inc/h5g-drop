@@ -14,21 +14,20 @@ var Score = (function (_super) {
     function Score() {
         var _this = _super.call(this) || this;
         _this.point = 0;
-        _this.combo = 0; // １ターンで壊したBOX数だけコンボになる（高得点）
         _this.bestScore = 0;
         _this.text = null;
         _this.textBest = null;
         Score.I = _this;
         _this.point = 0;
-        _this.text = Util.newTextField("SCORE : 0", Util.width / 22, 0x0080ff, 0.5, 0.0, true);
+        _this.text = Util.newTextField("0m", Util.width / 22, FONT_COLOR, 0.5, 0.0, true);
         GameObject.display.addChild(_this.text);
-        var bestScore = egret.localStorage.getItem("bestScore"); // string
+        var bestScore = egret.localStorage.getItem(SAVE_KEY_BESTSCORE); // string
         if (bestScore == null) {
             bestScore = "50";
-            egret.localStorage.setItem("bestScore", bestScore);
+            egret.localStorage.setItem(SAVE_KEY_BESTSCORE, bestScore);
         }
         _this.bestScore = parseInt(bestScore);
-        _this.textBest = Util.newTextField("BEST : " + bestScore, Util.width / 22, 0x0080ff, 0.0, 0.0, true);
+        _this.textBest = Util.newTextField("BEST:" + bestScore + "m", Util.width / 22, FONT_COLOR, 0.0, 0.0, true);
         GameObject.display.addChild(_this.textBest);
         return _this;
     }
@@ -37,17 +36,18 @@ var Score = (function (_super) {
         this.text = null;
         GameObject.display.removeChild(this.textBest);
         this.textBest = null;
+        Score.I = null;
     };
     Score.prototype.update = function () {
-        this.text.text = "SCORE : " + this.point.toFixed();
+        this.point += Player.I.scrollSpeed / Util.height * 10;
+        this.text.text = "" + this.point.toFixed() + "m";
         if (this.bestScore < this.point) {
             this.bestScore = this.point;
-            this.textBest.text = "BEST : " + this.point.toFixed();
+            this.textBest.text = "BEST:" + this.point.toFixed();
         }
     };
-    Score.prototype.breakTarget = function () {
-        this.point += 1 + this.combo;
-        this.combo++;
+    Score.prototype.breakBlock = function () {
+        this.point += 1;
     };
     Score.I = null; // singleton instance
     return Score;

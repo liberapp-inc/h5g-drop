@@ -28,15 +28,16 @@ class Obstacle extends GameObject{
         }else{
             this.shape.graphics.clear();
         }
+        
+        this.shape.graphics.beginFill(OBSTACLE_COLOR);
+        this.shape.graphics.drawCircle(0, 0, radius);
+        this.shape.graphics.endFill();
         this.shape.x = x;
         this.shape.y = y;
-        this.shape.graphics.beginFill( 0x20f0e0 );
-        this.shape.graphics.drawCircle(0, 0, radius );
-        this.shape.graphics.endFill();
     }
 
     update() {
-        this.shape.y -= Player.I.scroll;
+        this.shape.y -= Player.I.scrollSpeed;
 
         this.scaleAnim();
 

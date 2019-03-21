@@ -6,7 +6,7 @@ class Background extends GameObject{
         super();
 
         this.shape = new egret.Shape();
-        this.shape.graphics.beginFill(0xf0f2f8);
+        this.shape.graphics.beginFill(BACK_COLOR);
         this.shape.graphics.drawRect(0, 0, Util.width, Util.height);
         this.shape.graphics.endFill();
         GameObject.display.addChild(this.shape);

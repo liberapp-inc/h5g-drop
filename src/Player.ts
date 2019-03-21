@@ -4,33 +4,27 @@
 class Player extends GameObject{
 
     static I:Player = null;
+    buttonLR:ButtonLR;
+
     radius:number;
     vx:number = 0;
     vy:number = 0;
-    scroll:number = 0;
+    scrollSpeed:number = 0;
+    scrollTotal:number = 0;
     state:()=>void = this.stateNone;
-
-    touchX:number = -1;
-    offsetX:number = 0;
 
     constructor() {
         super();
 
         Player.I = this;
+        this.buttonLR = new ButtonLR();
         this.radius = BALL_SIZE_PER_WIDTH * Util.width * 0.5;
-        this.setShape( 0.5*Util.width, 0.2*Util.height, this.radius);
+        this.setShape( 0.5*Util.width, 0.3*Util.height, this.radius);
         this.vx = 0;
         this.vy = 0;
-
-        GameObject.display.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => this.touchBegin(e), this);
-        GameObject.display.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, (e: egret.TouchEvent) => this.touchMove(e), this);
-        GameObject.display.stage.addEventListener(egret.TouchEvent.TOUCH_END, (e: egret.TouchEvent) => this.touchEnd(e), this);
     }
 
     onDestroy(){
-        GameObject.display.stage.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => this.touchBegin(e), this);
-        GameObject.display.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, (e: egret.TouchEvent) => this.touchMove(e), this);
-        GameObject.display.stage.removeEventListener(egret.TouchEvent.TOUCH_END, (e: egret.TouchEvent) => this.touchEnd(e), this);
         Player.I = null;
     }
 
@@ -38,11 +32,12 @@ class Player extends GameObject{
         if( this.shape == null ){
             this.shape = new egret.Shape();
             GameObject.display.addChild(this.shape);
+            GameObject.display.setChildIndex(this.shape, 3);
         }else{
             this.shape.graphics.clear();
         }
         
-        this.shape.graphics.beginFill(0x00c0ff);
+        this.shape.graphics.beginFill(PLAYER_COLOR);
         this.shape.graphics.drawCircle(0, 0, radius);
         this.shape.graphics.endFill();
         this.shape.x = x;
@@ -58,102 +53,69 @@ class Player extends GameObject{
     stateDrop() {
         // 移動処理
         this.move();
-        this.scroll = this.vy;
+        this.scrollSpeed = Util.clamp( this.vy, Util.height / 768, 999 );
+        this.scrollTotal += this.scrollSpeed;
+        
         this.shape.x += this.vx;
-        this.vx *= 0.95;
-        this.vy *= 0.95;
-        this.vy += this.radius * 0.05;
+        this.shape.y += this.vy - this.scrollSpeed;
+        this.vx *= 0.96;
+        this.vy *= 0.97;
+        this.vy += this.radius * 0.015;
 
-        // Targetとの接触判定（一番近いもの）
-        let nearest = null;
-        let ndd = 0;
+        // Targetとの反射
         Obstacle.obstacles.forEach( obstacle => {
             let dx = obstacle.shape.x - this.shape.x;
             let dy = obstacle.shape.y - this.shape.y;
             let dd = dx**2 + dy**2;
+            let rr = (obstacle.radius + this.radius) ** 2;
+            if( dd < rr ){
+                let l = Math.sqrt( dd );
+                let udx = dx / l;
+                let udy = dy / l;
 
-            if( !nearest ){
-                let rr = (obstacle.radius + this.radius) ** 2;
-                if( dd < rr ){
-                    nearest = obstacle;
-                    ndd = dd;
-                }
-            }
-            else{
-                if( ndd > dd ){
-                    nearest = obstacle;
-                    ndd = dd;
+                let dot = udx * this.vx + udy * this.vy;
+                if( dot > 0 ){
+                    this.vx += -2 * 0.95 * dot * udx;
+                    this.vy += -2 * 0.95 * dot * udy;
+                    let minSpeed = (this.radius * 0.2);
+                    l = this.vx**2 + this.vy**2;
+                    if( l < minSpeed**2 ) {
+                        l = minSpeed / Math.sqrt( l );
+                        this.vx *= l;
+                        this.vy *= l;
+                    }
+                    obstacle.hit();
                 }
             }
         });
-
-        // 反射
-        if( nearest ){
-            let dx = this.shape.x - nearest.shape.x;
-            let dy = this.shape.y - nearest.shape.y;
-            let l = Math.sqrt(dx**2 + dy**2);
-            let udx = dx / l;
-            let udy = dy / l;
-
-            let dot = udx * this.vx + udy * this.vy;
-            if( dot < 0 ){
-                this.vx += -2 * 0.90 * dot * udx;
-                this.vy += -2 * 0.90 * dot * udy;
-                let minSpeed = (this.radius * 0.2);
-                l = this.vx**2 + this.vy**2;
-                if( l < minSpeed**2 ) {
-                    l = minSpeed / Math.sqrt( l );
-                    this.vx *= l;
-                    this.vy *= l;
-                } 
-                nearest.applyDamage( 1, -udx, -udy );
-            }
-        }
 
         this.boundWall();
     }
 
     // 壁で跳ね返り
     boundWall(){
-        if( (this.shape.x - Util.width*0.5)**2 > (Util.width*0.5 - this.radius)**2 ) {
-            this.shape.x -= this.vx;
+        let x = this.shape.x - Util.width*0.5;
+        let wide = Util.width*0.5 - this.radius;
+
+        if( x**2 > wide**2 ) {
+            this.shape.x = Util.clamp( this.shape.x, this.radius, Util.width - this.radius );
             this.vx *= -0.5;
         }
+
         if( this.vy < 0 && this.shape.y < this.radius ) {
-            this.shape.y -= this.vy;
-            this.vy *= -0.5;
-        }
-        // 下に落ちたら消える
-        if( this.shape.y - this.radius < 0 ) {
             new GameOver();
+            this.scrollSpeed = 0;
             this.state = this.stateNone;
         }
     }
 
-    touchBegin(e:egret.TouchEvent){
-        if( this.state == this.stateNone )
-            return;
-        this.touchX = e.localX;
-    }
-    touchMove(e:egret.TouchEvent){
-        if( this.state == this.stateNone )
-            return;
-        this.touchX = e.localX;
-    }
-    touchEnd(e:egret.TouchEvent){
-        if( this.state == this.stateNone )
-            return;
-        this.touchX = -1;
-    }
-
     move(){
-        if( this.touchX >= 0 ){
-            if( this.touchX < Util.width * 0.5 ){
-                this.vx -= this.radius * (1/16);
-            }else{
-                this.vx += this.radius * (1/16);
-            }
-            this.vx = Util.clamp( this.vx, -this.radius, +this.radius );
+        if( this.buttonLR.left ){
+            this.vx -= this.radius * (1/20);
         }
+        if( this.buttonLR.right ){
+            this.vx += this.radius * (1/20);
+        }
+        this.vx = Util.clamp( this.vx, -this.radius, +this.radius );
     }
 }

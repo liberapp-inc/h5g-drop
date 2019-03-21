@@ -10,14 +10,14 @@ var Util = (function () {
         this.height = eui.stage.stageHeight;
         this.width = eui.stage.stageWidth;
     };
-    Util.random = function (min, max) {
-        return min + Math.random() * (max - min);
-    };
-    Util.randomInt = function (min, max) {
-        min = Math.floor(min);
-        max = Math.floor(max) + 0.999;
-        return Math.floor(min + Math.random() * (max - min));
-    };
+    // static random(min:number, max:number):number {
+    //     return min + Math.random() * (max - min);
+    // }
+    // static randomInt(min:number, max:number):number {
+    //     min = Math.floor(min);
+    //     max = Math.floor(max)+0.999;
+    //     return Math.floor( min + Math.random() * (max - min) );
+    // }
     Util.clamp = function (value, min, max) {
         if (value < min)
             value = min;

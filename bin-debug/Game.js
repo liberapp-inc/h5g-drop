@@ -5,8 +5,14 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 };
 var BALL_SIZE_PER_WIDTH = 1 / 16;
 var BALL_RADIUS_PER_WIDTH = BALL_SIZE_PER_WIDTH * 0.5;
-var TARGET_SIZE_PER_WIDTH = 1 / 6;
-var TARGET_RADIUS_PER_WIDTH = TARGET_SIZE_PER_WIDTH * 0.5;
+var OBSTACLE_SIZE_PER_WIDTH = 1 / 8;
+var OBSTACLE_RADIUS_PER_WIDTH = OBSTACLE_SIZE_PER_WIDTH * 0.5;
+var OBSTACLES_IN_HEIGHT = 10;
+var SAVE_KEY_BESTSCORE = "drop-bestScore";
+var BACK_COLOR = 0xeee2dc;
+var FONT_COLOR = 0x123c69;
+var PLAYER_COLOR = 0x123c69;
+var OBSTACLE_COLOR = 0xac3b61;
 var Game = (function () {
     function Game() {
     }
@@ -15,7 +21,7 @@ var Game = (function () {
         new Score();
         new Player();
         new StartMessage();
-        new Buttons();
+        new Wave(0);
     };
     return Game;
 }());
