@@ -16,7 +16,7 @@ class Random {
     v():number{ return (this.next() & this.max) / (this.max + 1); }         // 0以上 1未満
     f(min:number, max:number) { return min + this.v() * (max - min); }      // min以上 max未満
     i(min:number, max:number) { return Math.floor( this.f(min, max) ); }    // min以上 max未満（整数）
-    bool():boolean { return (this.next() & 1) == 0; }
+    bool():boolean { return (this.next() & 1) != 0; }
 
     // XOR Shift
     

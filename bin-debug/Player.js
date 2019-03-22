@@ -18,13 +18,14 @@ var Player = (function (_super) {
         _this.vy = 0;
         _this.scrollSpeed = 0;
         _this.scrollTotal = 0;
+        _this.hardRate = 0;
         _this.state = _this.stateNone;
         Player.I = _this;
         _this.buttonLR = new ButtonLR();
         _this.radius = BALL_SIZE_PER_WIDTH * Util.width * 0.5;
+        _this.minScrollSpeed = Util.height / (60 * 16);
+        _this.vy = _this.minScrollSpeed;
         _this.setShape(0.5 * Util.width, 0.3 * Util.height, _this.radius);
-        _this.vx = 0;
-        _this.vy = 0;
         return _this;
     }
     Player.prototype.onDestroy = function () {
@@ -53,13 +54,15 @@ var Player = (function (_super) {
         var _this = this;
         // 移動処理
         this.move();
-        this.scrollSpeed = Util.clamp(this.vy, Util.height / 768, 999);
+        this.scrollSpeed = Math.max(this.vy, this.minScrollSpeed);
         this.scrollTotal += this.scrollSpeed;
+        this.hardRate = Util.clamp(this.scrollTotal / (Util.height * 40), 0, 1); // 0.0~1.0
+        console.log("hard " + (this.hardRate * 100).toFixed());
         this.shape.x += this.vx;
         this.shape.y += this.vy - this.scrollSpeed;
         this.vx *= 0.96;
-        this.vy *= 0.97;
-        this.vy += this.radius * 0.015;
+        this.vy *= 0.97 + 0.01 * this.hardRate;
+        this.vy += this.radius * 0.014;
         // Targetとの反射
         Obstacle.obstacles.forEach(function (obstacle) {
             var dx = obstacle.shape.x - _this.shape.x;
@@ -73,7 +76,7 @@ var Player = (function (_super) {
                 var dot = udx * _this.vx + udy * _this.vy;
                 if (dot > 0) {
                     _this.vx += -2 * 0.95 * dot * udx;
-                    _this.vy += -2 * 0.95 * dot * udy;
+                    _this.vy += -2 * 0.93 * dot * udy;
                     var minSpeed = (_this.radius * 0.2);
                     l = Math.pow(_this.vx, 2) + Math.pow(_this.vy, 2);
                     if (l < Math.pow(minSpeed, 2)) {

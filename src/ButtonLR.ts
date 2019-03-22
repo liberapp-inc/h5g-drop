@@ -10,8 +10,8 @@ class ButtonLR extends GameObject{
     constructor() {
         super();
 
-        this.text[0] = Util.newTextField("◀左", Util.width / 8, FONT_COLOR, 0.1, 0.9, true);
-        this.text[1] = Util.newTextField("右▶", Util.width / 8, FONT_COLOR, 0.9, 0.9, true);
+        this.text[0] = Util.newTextField("◀", Util.width / 8, FONT_COLOR, 0.1, 0.9, true, false);
+        this.text[1] = Util.newTextField("▶", Util.width / 8, FONT_COLOR, 0.9, 0.9, true, false);
         this.text[0].alpha = 0.5;
         this.text[1].alpha = 0.5;
         GameObject.display.addChild( this.text[0] );

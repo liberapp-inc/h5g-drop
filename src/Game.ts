@@ -16,11 +16,17 @@ const OBSTACLE_COLOR = 0xac3b61;
 
 class Game {
 
+    static loadSceneTitle() {
+        new Title();
+    }
+
     static loadSceneGamePlay() {
-        new Background();
+        //new Background();
         new Score();
         new Player();
         new StartMessage();
-        new Wave( 0 );
+        new Wave( Game.stage );
     }
+
+    static stage:number = 0;
 }

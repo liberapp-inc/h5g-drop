@@ -15,9 +15,9 @@ var GameOver = (function (_super) {
         var _this = _super.call(this) || this;
         _this.textGameOver = null;
         _this.textScore = null;
-        _this.textGameOver = Util.newTextField("GAME OVER", Util.width / 12, FONT_COLOR, 0.5, 0.45, true);
+        _this.textGameOver = Util.newTextField("GAME OVER", Util.width / 11, FONT_COLOR, 0.5, 0.45, true, false);
         GameObject.display.addChild(_this.textGameOver);
-        _this.textScore = Util.newTextField("SCORE : " + Score.I.point.toFixed() + "m", Util.width / 14, FONT_COLOR, 0.5, 0.55, true);
+        _this.textScore = Util.newTextField("SCORE : " + Score.I.point.toFixed() + "m", Util.width / 14, FONT_COLOR, 0.5, 0.55, true, false);
         GameObject.display.addChild(_this.textScore);
         if (Score.I.point >= Score.I.bestScore) {
             egret.localStorage.setItem(SAVE_KEY_BESTSCORE, Score.I.point.toFixed()); // string
@@ -37,7 +37,7 @@ var GameOver = (function (_super) {
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, function (e) { return _this.tap(e); }, this);
     };
     GameOver.prototype.tap = function (e) {
-        GameObject.transit = Game.loadSceneGamePlay;
+        GameObject.transit = Game.loadSceneTitle;
         this.destroy();
     };
     return GameOver;

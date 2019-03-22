@@ -16,13 +16,17 @@ var OBSTACLE_COLOR = 0xac3b61;
 var Game = (function () {
     function Game() {
     }
+    Game.loadSceneTitle = function () {
+        new Title();
+    };
     Game.loadSceneGamePlay = function () {
-        new Background();
+        //new Background();
         new Score();
         new Player();
         new StartMessage();
-        new Wave(0);
+        new Wave(Game.stage);
     };
+    Game.stage = 0;
     return Game;
 }());
 __reflect(Game.prototype, "Game");

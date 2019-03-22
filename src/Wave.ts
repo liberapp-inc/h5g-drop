@@ -7,17 +7,19 @@ class Wave extends GameObject{
 
     scrollTotal:number = 0;
     next:number = 0;
-    wave:number = 0;
 
-    static seeds:number[] = [ 0, 0, 0, 0, 0,  0, 0, 0, 0, 0 ];
+    static seeds:number[] = [ 0, 0, 0, 0 ];
+    static courseLength:number[] = [ 0, 100, 200, 300 ];
 
     constructor( stage:number )  {
         super();
 
+        console.log( stage );
+
         // random seed 
         let seed = Date.now();
         if( stage > 0 )
-            seed = stage * 765 + 1 + Wave.seeds[ stage-1 ];
+            seed = stage * 0x1dea + 1 + Wave.seeds[ stage-1 ];
         this.rand = new Random( seed );
     }
 
@@ -27,9 +29,8 @@ class Wave extends GameObject{
     update() {
         this.scrollTotal += Player.I.scrollSpeed;
 
-        let hardRate = Util.clamp( this.scrollTotal / 500, 0, 1 ); // 0.0~1.0
         let r = OBSTACLE_RADIUS_PER_WIDTH * Util.width * 2;
-        let xrd = 2.0 - 1.0 * hardRate;
+        let xrd = 2.0 - 1.0 * Player.I.hardRate;
 
         while( this.next <= this.scrollTotal ){
             this.next += this.rand.i( 1, 4 ) * Util.height / OBSTACLES_IN_HEIGHT;

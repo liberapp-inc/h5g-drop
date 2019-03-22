@@ -8,8 +8,8 @@ class StartMessage extends GameObject{
     constructor() {
         super();
 
-        this.text[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true);
-        this.text[1] = Util.newTextField("← → ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true);
+        this.text[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true, false);
+        this.text[1] = Util.newTextField("ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
         GameObject.display.addChild( this.text[0] );
         GameObject.display.addChild( this.text[1] );
 

@@ -11,8 +11,9 @@ class Main extends eui.UILayer {
     private addToStage() {
         GameObject.initial( this.stage );
         Util.init( this );
-        Game.loadSceneGamePlay();
-        // this.addEventListener(egret.Event.ENTER_FRAME,GameObject.process,this);
+        Game.loadSceneTitle();
+        //Game.loadSceneGamePlay();
+        
         egret.startTick(this.tickLoop, this);
     }
 

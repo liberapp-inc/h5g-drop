@@ -41,14 +41,14 @@ class Obstacle extends GameObject{
 
         this.scaleAnim();
 
-        if( this.shape.y + this.radius <= 0 )
+        if( this.shape.y + this.radius *0.5 <= 0 )
             this.destroy();
     }
 
     scaleAnim(){
         if( this.animFrame > 0 ) {
             this.animFrame--;
-            let scale = 1 + 0.2 * this.animFrame / this.animFrameMax;
+            let scale = 1 + 0.4 * this.animFrame / this.animFrameMax;
             this.shape.scaleX = this.shape.scaleY = scale;
         }
     }
@@ -56,6 +56,8 @@ class Obstacle extends GameObject{
     // ヒット
     hit(){
         this.animFrame = this.animFrameMax;
+        this.radius *= 0.8;
+        this.setShape( this.shape.x, this.shape.y, this.radius );
         this.scaleAnim();
     }
 }

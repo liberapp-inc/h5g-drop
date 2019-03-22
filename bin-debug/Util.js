@@ -10,14 +10,6 @@ var Util = (function () {
         this.height = eui.stage.stageHeight;
         this.width = eui.stage.stageWidth;
     };
-    // static random(min:number, max:number):number {
-    //     return min + Math.random() * (max - min);
-    // }
-    // static randomInt(min:number, max:number):number {
-    //     min = Math.floor(min);
-    //     max = Math.floor(max)+0.999;
-    //     return Math.floor( min + Math.random() * (max - min) );
-    // }
     Util.clamp = function (value, min, max) {
         if (value < min)
             value = min;
@@ -35,14 +27,20 @@ var Util = (function () {
             (((c0 & 0xff) * rate10 + (c1 & 0xff) * rate01) & 0xff);
         return color;
     };
-    Util.newTextField = function (text, size, color, xRatio, yRatio, bold) {
+    Util.newTextField = function (text, size, color, xRatio, yRatio, bold, adjust) {
         var tf = new egret.TextField();
         tf.text = text;
         tf.bold = bold;
         tf.size = size;
         tf.textColor = color;
-        tf.x = (Util.width - tf.width) * xRatio;
-        tf.y = (Util.height - tf.height) * yRatio;
+        if (adjust) {
+            tf.x = (Util.width - tf.width) * xRatio;
+            tf.y = (Util.height - tf.height) * yRatio;
+        }
+        else {
+            tf.x = Util.width * xRatio - tf.width * 0.5;
+            tf.y = Util.height * yRatio - tf.height * 0.5;
+        }
         return tf;
     };
     return Util;

@@ -19,7 +19,7 @@ var Score = (function (_super) {
         _this.textBest = null;
         Score.I = _this;
         _this.point = 0;
-        _this.text = Util.newTextField("0m", Util.width / 22, FONT_COLOR, 0.5, 0.0, true);
+        _this.text = Util.newTextField("0m", Util.width / 22, FONT_COLOR, 0.5, 0.0, true, true);
         GameObject.display.addChild(_this.text);
         var bestScore = egret.localStorage.getItem(SAVE_KEY_BESTSCORE); // string
         if (bestScore == null) {
@@ -27,7 +27,7 @@ var Score = (function (_super) {
             egret.localStorage.setItem(SAVE_KEY_BESTSCORE, bestScore);
         }
         _this.bestScore = parseInt(bestScore);
-        _this.textBest = Util.newTextField("BEST:" + bestScore + "m", Util.width / 22, FONT_COLOR, 0.0, 0.0, true);
+        _this.textBest = Util.newTextField("BEST:" + bestScore + "m", Util.width / 22, FONT_COLOR, 0.0, 0.0, true, true);
         GameObject.display.addChild(_this.textBest);
         return _this;
     }

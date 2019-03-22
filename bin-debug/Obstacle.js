@@ -43,19 +43,21 @@ var Obstacle = (function (_super) {
     Obstacle.prototype.update = function () {
         this.shape.y -= Player.I.scrollSpeed;
         this.scaleAnim();
-        if (this.shape.y + this.radius <= 0)
+        if (this.shape.y + this.radius * 0.5 <= 0)
             this.destroy();
     };
     Obstacle.prototype.scaleAnim = function () {
         if (this.animFrame > 0) {
             this.animFrame--;
-            var scale = 1 + 0.2 * this.animFrame / this.animFrameMax;
+            var scale = 1 + 0.4 * this.animFrame / this.animFrameMax;
             this.shape.scaleX = this.shape.scaleY = scale;
         }
     };
     // ヒット
     Obstacle.prototype.hit = function () {
         this.animFrame = this.animFrameMax;
+        this.radius *= 0.8;
+        this.setShape(this.shape.x, this.shape.y, this.radius);
         this.scaleAnim();
     };
     Obstacle.obstacles = [];

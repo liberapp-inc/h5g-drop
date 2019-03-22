@@ -11,16 +11,6 @@ class Util{
         this.width  = eui.stage.stageWidth;
     }
 
-    // static random(min:number, max:number):number {
-    //     return min + Math.random() * (max - min);
-    // }
-
-    // static randomInt(min:number, max:number):number {
-    //     min = Math.floor(min);
-    //     max = Math.floor(max)+0.999;
-    //     return Math.floor( min + Math.random() * (max - min) );
-    // }
-
     static clamp(value:number, min:number, max:number):number {
         if( value < min ) value = min;
         if( value > max ) value = max;
@@ -40,14 +30,19 @@ class Util{
         return color;
     }
 
-    static newTextField(text:string, size:number, color:number, xRatio:number, yRatio:number, bold:boolean): egret.TextField {
+    static newTextField(text:string, size:number, color:number, xRatio:number, yRatio:number, bold:boolean, adjust:boolean): egret.TextField {
         let tf = new egret.TextField();
         tf.text = text;
         tf.bold = bold;
         tf.size = size;
         tf.textColor = color;
-        tf.x = (Util.width  - tf.width)  * xRatio;
-        tf.y = (Util.height - tf.height) * yRatio;
+        if( adjust ){
+            tf.x = (Util.width  - tf.width)  * xRatio;
+            tf.y = (Util.height - tf.height) * yRatio;
+        }else{
+            tf.x = Util.width  * xRatio - tf.width  * 0.5;
+            tf.y = Util.height * yRatio - tf.height * 0.5;
+        }
         return tf;
     }
 }

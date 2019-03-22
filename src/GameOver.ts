@@ -8,10 +8,10 @@ class GameOver extends GameObject{
     constructor() {
         super();
 
-        this.textGameOver = Util.newTextField("GAME OVER", Util.width / 12, FONT_COLOR, 0.5, 0.45, true);
+        this.textGameOver = Util.newTextField("GAME OVER", Util.width / 11, FONT_COLOR, 0.5, 0.45, true, false);
         GameObject.display.addChild( this.textGameOver );
         
-        this.textScore = Util.newTextField("SCORE : " + Score.I.point.toFixed() + "m", Util.width / 14, FONT_COLOR, 0.5, 0.55, true);
+        this.textScore = Util.newTextField("SCORE : " + Score.I.point.toFixed() + "m", Util.width / 14, FONT_COLOR, 0.5, 0.55, true, false);
         GameObject.display.addChild( this.textScore );
 
         if( Score.I.point >= Score.I.bestScore ){
@@ -33,7 +33,7 @@ class GameOver extends GameObject{
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, (e: egret.TouchEvent) => this.tap(e), this);
     }
     tap(e:egret.TouchEvent){
-        GameObject.transit = Game.loadSceneGamePlay;
+        GameObject.transit = Game.loadSceneTitle;
         this.destroy();
     }
 }

@@ -15,8 +15,8 @@ var StartMessage = (function (_super) {
     function StartMessage() {
         var _this = _super.call(this) || this;
         _this.text = [];
-        _this.text[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true);
-        _this.text[1] = Util.newTextField("← → ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true);
+        _this.text[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true, false);
+        _this.text[1] = Util.newTextField("ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
         GameObject.display.addChild(_this.text[0]);
         GameObject.display.addChild(_this.text[1]);
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, function (e) { return _this.tap(e); }, _this);

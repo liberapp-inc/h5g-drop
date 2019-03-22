@@ -11,6 +11,8 @@ class Player extends GameObject{
     vy:number = 0;
     scrollSpeed:number = 0;
     scrollTotal:number = 0;
+    minScrollSpeed:number;
+    hardRate:number = 0;
     state:()=>void = this.stateNone;
 
     constructor() {
@@ -19,9 +21,9 @@ class Player extends GameObject{
         Player.I = this;
         this.buttonLR = new ButtonLR();
         this.radius = BALL_SIZE_PER_WIDTH * Util.width * 0.5;
+        this.minScrollSpeed = Util.height / (60 * 16);
+        this.vy = this.minScrollSpeed;
         this.setShape( 0.5*Util.width, 0.3*Util.height, this.radius);
-        this.vx = 0;
-        this.vy = 0;
     }
 
     onDestroy(){
@@ -53,14 +55,16 @@ class Player extends GameObject{
     stateDrop() {
         // 移動処理
         this.move();
-        this.scrollSpeed = Util.clamp( this.vy, Util.height / 768, 999 );
+        this.scrollSpeed = Math.max( this.vy, this.minScrollSpeed );
         this.scrollTotal += this.scrollSpeed;
+        this.hardRate = Util.clamp( this.scrollTotal / (Util.height * 40), 0, 1 ); // 0.0~1.0
+        console.log( "hard " + (this.hardRate*100).toFixed() );
         
         this.shape.x += this.vx;
         this.shape.y += this.vy - this.scrollSpeed;
         this.vx *= 0.96;
-        this.vy *= 0.97;
-        this.vy += this.radius * 0.015;
+        this.vy *= 0.97 + 0.01 * this.hardRate;
+        this.vy += this.radius * 0.014;
 
         // Targetとの反射
         Obstacle.obstacles.forEach( obstacle => {
@@ -76,7 +80,7 @@ class Player extends GameObject{
                 let dot = udx * this.vx + udy * this.vy;
                 if( dot > 0 ){
                     this.vx += -2 * 0.95 * dot * udx;
-                    this.vy += -2 * 0.95 * dot * udy;
+                    this.vy += -2 * 0.93 * dot * udy;
                     let minSpeed = (this.radius * 0.2);
                     l = this.vx**2 + this.vy**2;
                     if( l < minSpeed**2 ) {

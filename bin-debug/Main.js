@@ -20,8 +20,8 @@ var Main = (function (_super) {
     Main.prototype.addToStage = function () {
         GameObject.initial(this.stage);
         Util.init(this);
-        Game.loadSceneGamePlay();
-        // this.addEventListener(egret.Event.ENTER_FRAME,GameObject.process,this);
+        Game.loadSceneTitle();
+        //Game.loadSceneGamePlay();
         egret.startTick(this.tickLoop, this);
     };
     Main.prototype.tickLoop = function (timeStamp) {
