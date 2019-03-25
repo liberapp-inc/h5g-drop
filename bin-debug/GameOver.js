@@ -17,10 +17,12 @@ var GameOver = (function (_super) {
         _this.textScore = null;
         _this.textGameOver = Util.newTextField("GAME OVER", Util.width / 11, FONT_COLOR, 0.5, 0.45, true, false);
         GameObject.display.addChild(_this.textGameOver);
-        _this.textScore = Util.newTextField("SCORE : " + Score.I.point.toFixed() + "m", Util.width / 14, FONT_COLOR, 0.5, 0.55, true, false);
-        GameObject.display.addChild(_this.textScore);
-        if (Score.I.point >= Score.I.bestScore) {
-            egret.localStorage.setItem(SAVE_KEY_BESTSCORE, Score.I.point.toFixed()); // string
+        if (ScoreMeter.I) {
+            if (ScoreMeter.I.point >= ScoreMeter.I.bestScore) {
+                egret.localStorage.setItem(SAVE_KEY_BESTSCORE, ScoreMeter.I.point.toFixed()); // string
+            }
+            _this.textScore = Util.newTextField("SCORE : " + ScoreMeter.I.point.toFixed() + "m", Util.width / 14, FONT_COLOR, 0.5, 0.55, true, false);
+            GameObject.display.addChild(_this.textScore);
         }
         GameObject.display.once(egret.TouchEvent.TOUCH_BEGIN, function (e) { return _this.touchBegin(e); }, _this);
         return _this;
@@ -28,8 +30,10 @@ var GameOver = (function (_super) {
     GameOver.prototype.onDestroy = function () {
         GameObject.display.removeChild(this.textGameOver);
         this.textGameOver = null;
-        GameObject.display.removeChild(this.textScore);
-        this.textScore = null;
+        if (this.textScore) {
+            GameObject.display.removeChild(this.textScore);
+            this.textScore = null;
+        }
     };
     GameOver.prototype.update = function () { };
     GameOver.prototype.touchBegin = function (e) {

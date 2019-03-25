@@ -4,12 +4,12 @@
 class Wave extends GameObject{
 
     rand:Random;
-
-    scrollTotal:number = 0;
-    next:number = 0;
+    nextWave:number = 0;
+    finishLine:FinishLine = null;
 
     static seeds:number[] = [ 0, 0, 0, 0 ];
-    static courseLength:number[] = [ 0, 100, 200, 300 ];
+    static stageLength:number[] = [ 0, 100, 160, 250 ];
+    static stageHardRate:number[] = [ 0, 0.4, 0.6, 0.8 ];
 
     constructor( stage:number )  {
         super();
@@ -27,13 +27,22 @@ class Wave extends GameObject{
     }
 
     update() {
-        this.scrollTotal += Player.I.scrollSpeed;
+
+        // time attack stage
+        if( ScoreTime.I ){
+            if( Player.I.scrollTotal / Util.height * 10 >= Wave.stageLength[ Game.stage ] - 10 ){
+                if( this.finishLine == null ){
+                    this.finishLine = new FinishLine(Util.height);
+                }
+                return;
+            }
+        }
 
         let r = OBSTACLE_RADIUS_PER_WIDTH * Util.width * 2;
-        let xrd = 2.0 - 1.0 * Player.I.hardRate;
+        let xrd = 2.0 - 0.5 * Player.I.hardRate;
 
-        while( this.next <= this.scrollTotal ){
-            this.next += this.rand.i( 1, 4 ) * Util.height / OBSTACLES_IN_HEIGHT;
+        while( this.nextWave <= Player.I.scrollTotal ){
+            this.nextWave += this.rand.i( 1, 4 ) * Util.height / OBSTACLES_IN_HEIGHT;
 
             let xr = this.rand.v() * xrd;
             while( xr<1 ){

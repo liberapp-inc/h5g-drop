@@ -3,23 +3,21 @@
 
 class StartMessage extends GameObject{
 
-    text:egret.TextField[] = [];
+    texts:egret.TextField[] = [];
     
     constructor() {
         super();
 
-        this.text[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true, false);
-        this.text[1] = Util.newTextField("ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
-        GameObject.display.addChild( this.text[0] );
-        GameObject.display.addChild( this.text[1] );
+        this.texts[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true, false);
+        this.texts[1] = Util.newTextField("ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
+        this.texts.forEach( text =>{ GameObject.display.addChild( text ); });
 
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, (e: egret.TouchEvent) => this.tap(e), this);
     }
 
     onDestroy(){
-        GameObject.display.removeChild( this.text[0] );
-        GameObject.display.removeChild( this.text[1] );
-        this.text = null;
+        this.texts.forEach( text =>{ GameObject.display.removeChild( text ); });
+        this.texts = null;
     }
 
     update() {}

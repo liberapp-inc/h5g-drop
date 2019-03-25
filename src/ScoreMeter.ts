@@ -1,8 +1,8 @@
 // Liberapp 2019 - Tahiti Katagai
 
-class Score extends GameObject{
+class ScoreMeter extends GameObject{
 
-    static I:Score = null;   // singleton instance
+    static I:ScoreMeter = null;   // singleton instance
 
     point:number = 0;
     bestScore:number = 0;
@@ -12,7 +12,7 @@ class Score extends GameObject{
     constructor() {
         super();
 
-        Score.I = this;
+        ScoreMeter.I = this;
         this.point = 0;
         this.text = Util.newTextField("0m", Util.width / 22, FONT_COLOR, 0.5, 0.0, true, true);
         GameObject.display.addChild( this.text );
@@ -32,7 +32,7 @@ class Score extends GameObject{
         this.text = null;
         GameObject.display.removeChild( this.textBest );
         this.textBest = null;
-        Score.I = null;
+        ScoreMeter.I = null;
     }
 
     update() {

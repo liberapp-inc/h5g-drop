@@ -5,14 +5,15 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 };
 var BALL_SIZE_PER_WIDTH = 1 / 16;
 var BALL_RADIUS_PER_WIDTH = BALL_SIZE_PER_WIDTH * 0.5;
-var OBSTACLE_SIZE_PER_WIDTH = 1 / 8;
+var OBSTACLE_SIZE_PER_WIDTH = 1 / 7;
 var OBSTACLE_RADIUS_PER_WIDTH = OBSTACLE_SIZE_PER_WIDTH * 0.5;
 var OBSTACLES_IN_HEIGHT = 10;
 var SAVE_KEY_BESTSCORE = "drop-bestScore";
-var BACK_COLOR = 0xeee2dc;
-var FONT_COLOR = 0x123c69;
-var PLAYER_COLOR = 0x123c69;
-var OBSTACLE_COLOR = 0xac3b61;
+var SAVE_KEY_BESTTIME = "drop-bestTime"; // + ステージ番号
+var BACK_COLOR = 0xF3FFFF;
+var FONT_COLOR = 0x00c0ff;
+var PLAYER_COLOR = 0x00f0ff;
+var OBSTACLE_COLOR = 0x0080ff;
 var Game = (function () {
     function Game() {
     }
@@ -20,11 +21,18 @@ var Game = (function () {
         new Title();
     };
     Game.loadSceneGamePlay = function () {
-        //new Background();
-        new Score();
-        new Player();
-        new StartMessage();
-        new Wave(Game.stage);
+        if (Game.stage == 0) {
+            new ScoreMeter();
+            new Player();
+            new StartMessage();
+            new Wave(Game.stage);
+        }
+        else {
+            new ScoreTime();
+            new Player();
+            new StartMessage();
+            new Wave(Game.stage);
+        }
     };
     Game.stage = 0;
     return Game;

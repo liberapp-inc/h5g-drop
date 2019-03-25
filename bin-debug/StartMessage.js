@@ -14,18 +14,16 @@ var StartMessage = (function (_super) {
     __extends(StartMessage, _super);
     function StartMessage() {
         var _this = _super.call(this) || this;
-        _this.text = [];
-        _this.text[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true, false);
-        _this.text[1] = Util.newTextField("ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
-        GameObject.display.addChild(_this.text[0]);
-        GameObject.display.addChild(_this.text[1]);
+        _this.texts = [];
+        _this.texts[0] = Util.newTextField("ボールを操作して障害物を避けろ！", Util.width / 20, FONT_COLOR, 0.5, 0.4, true, false);
+        _this.texts[1] = Util.newTextField("ボタンで左右に移動", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
+        _this.texts.forEach(function (text) { GameObject.display.addChild(text); });
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, function (e) { return _this.tap(e); }, _this);
         return _this;
     }
     StartMessage.prototype.onDestroy = function () {
-        GameObject.display.removeChild(this.text[0]);
-        GameObject.display.removeChild(this.text[1]);
-        this.text = null;
+        this.texts.forEach(function (text) { GameObject.display.removeChild(text); });
+        this.texts = null;
     };
     StartMessage.prototype.update = function () { };
     StartMessage.prototype.tap = function (e) {

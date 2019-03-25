@@ -49,6 +49,10 @@ var Player = (function (_super) {
     Player.prototype.update = function () {
         this.state();
     };
+    Player.prototype.setStateNone = function () {
+        this.state = this.stateNone;
+        this.scrollSpeed = 0;
+    };
     Player.prototype.stateNone = function () { };
     Player.prototype.stateDrop = function () {
         var _this = this;
@@ -56,12 +60,12 @@ var Player = (function (_super) {
         this.move();
         this.scrollSpeed = Math.max(this.vy, this.minScrollSpeed);
         this.scrollTotal += this.scrollSpeed;
-        this.hardRate = Util.clamp(this.scrollTotal / (Util.height * 40), 0, 1); // 0.0~1.0
-        console.log("hard " + (this.hardRate * 100).toFixed());
+        this.hardRate = Util.clamp(this.scrollTotal / (Util.height * 40) + Wave.stageHardRate[Game.stage], 0, 1); // 0.0~1.0
+        //console.log( "hard " + (this.hardRate*100).toFixed() );
         this.shape.x += this.vx;
         this.shape.y += this.vy - this.scrollSpeed;
         this.vx *= 0.96;
-        this.vy *= 0.97 + 0.01 * this.hardRate;
+        this.vy *= 0.97 + 0.02 * this.hardRate;
         this.vy += this.radius * 0.014;
         // Targetとの反射
         Obstacle.obstacles.forEach(function (obstacle) {
@@ -100,16 +104,19 @@ var Player = (function (_super) {
         }
         if (this.vy < 0 && this.shape.y < this.radius) {
             new GameOver();
-            this.scrollSpeed = 0;
-            this.state = this.stateNone;
+            this.setStateNone();
+            this.shape.y = this.radius;
+            this.vy = 0;
         }
     };
     Player.prototype.move = function () {
         if (this.buttonLR.left) {
             this.vx -= this.radius * (1 / 20);
+            this.vy *= 0.995;
         }
         if (this.buttonLR.right) {
             this.vx += this.radius * (1 / 20);
+            this.vy *= 0.995;
         }
         this.vx = Util.clamp(this.vx, -this.radius, +this.radius);
     };
