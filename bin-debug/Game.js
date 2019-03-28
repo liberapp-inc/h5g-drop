@@ -10,10 +10,11 @@ var OBSTACLE_RADIUS_PER_WIDTH = OBSTACLE_SIZE_PER_WIDTH * 0.5;
 var OBSTACLES_IN_HEIGHT = 10;
 var SAVE_KEY_BESTSCORE = "drop-bestScore";
 var SAVE_KEY_BESTTIME = "drop-bestTime"; // + ステージ番号
-var BACK_COLOR = 0xF3FFFF;
-var FONT_COLOR = 0x00c0ff;
+var BACK_COLOR = 0xFfFfe8; // index.htmlで設定
+var FONT_COLOR = 0x0080ff;
 var PLAYER_COLOR = 0x00f0ff;
-var OBSTACLE_COLOR = 0x0080ff;
+var OBSTACLE_COLOR = 0x1060ff;
+var OBSTACLE_COLOR2 = 0x5060ff;
 var Game = (function () {
     function Game() {
     }

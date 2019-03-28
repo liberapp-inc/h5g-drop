@@ -7,7 +7,7 @@ class Wave extends GameObject{
     nextWave:number = 0;
     finishLine:FinishLine = null;
 
-    static seeds:number[] = [ 0, 0, 0, 0 ];
+    static seeds:number[] = [ 0, 0, 5, 2 ];
     static stageLength:number[] = [ 0, 100, 160, 250 ];
     static stageHardRate:number[] = [ 0, 0.4, 0.6, 0.8 ];
 
@@ -39,7 +39,7 @@ class Wave extends GameObject{
         }
 
         let r = OBSTACLE_RADIUS_PER_WIDTH * Util.width * 2;
-        let xrd = 2.0 - 0.5 * Player.I.hardRate;
+        let xrd = 2.5 - 0.5 * Player.I.hardRate;
 
         while( this.nextWave <= Player.I.scrollTotal ){
             this.nextWave += this.rand.i( 1, 4 ) * Util.height / OBSTACLES_IN_HEIGHT;

@@ -14,6 +14,7 @@ var Player = (function (_super) {
     __extends(Player, _super);
     function Player() {
         var _this = _super.call(this) || this;
+        _this.p = [];
         _this.vx = 0;
         _this.vy = 0;
         _this.scrollSpeed = 0;
@@ -36,15 +37,26 @@ var Player = (function (_super) {
             this.shape = new egret.Shape();
             GameObject.display.addChild(this.shape);
             GameObject.display.setChildIndex(this.shape, 3);
+            this.p[0] = x;
+            this.p[1] = y;
+            this.p[2] = x;
+            this.p[3] = y;
         }
         else {
             this.shape.graphics.clear();
         }
-        this.shape.graphics.beginFill(PLAYER_COLOR);
-        this.shape.graphics.drawCircle(0, 0, radius);
-        this.shape.graphics.endFill();
+        var rate = 0.3;
+        this.p[0] += (x - this.p[0]) * rate;
+        this.p[1] += (y - this.p[1]) * rate - this.scrollSpeed;
+        this.p[2] += (this.p[0] - this.p[2]) * rate;
+        this.p[3] += (this.p[1] - this.p[3]) * rate - this.scrollSpeed;
         this.shape.x = x;
         this.shape.y = y;
+        this.shape.graphics.beginFill(PLAYER_COLOR);
+        this.shape.graphics.drawCircle(0, 0, radius);
+        this.shape.graphics.drawCircle(this.p[0] - x, this.p[1] - y, radius * 0.5);
+        this.shape.graphics.drawCircle(this.p[2] - x, this.p[3] - y, radius * 0.3);
+        this.shape.graphics.endFill();
     };
     Player.prototype.update = function () {
         this.state();
@@ -60,10 +72,11 @@ var Player = (function (_super) {
         this.move();
         this.scrollSpeed = Math.max(this.vy, this.minScrollSpeed);
         this.scrollTotal += this.scrollSpeed;
-        this.hardRate = Util.clamp(this.scrollTotal / (Util.height * 40) + Wave.stageHardRate[Game.stage], 0, 1); // 0.0~1.0
+        this.hardRate = Util.clamp(this.scrollTotal / (Util.height * (400 / 10)) + Wave.stageHardRate[Game.stage], 0, 1); // 0.0~1.0 (0m~400m)
         //console.log( "hard " + (this.hardRate*100).toFixed() );
         this.shape.x += this.vx;
         this.shape.y += this.vy - this.scrollSpeed;
+        this.setShape(this.shape.x, this.shape.y, this.radius);
         this.vx *= 0.96;
         this.vy *= 0.97 + 0.02 * this.hardRate;
         this.vy += this.radius * 0.014;
@@ -112,11 +125,11 @@ var Player = (function (_super) {
     Player.prototype.move = function () {
         if (this.buttonLR.left) {
             this.vx -= this.radius * (1 / 20);
-            this.vy *= 0.995;
+            this.vy *= 0.98;
         }
         if (this.buttonLR.right) {
             this.vx += this.radius * (1 / 20);
-            this.vy *= 0.995;
+            this.vy *= 0.98;
         }
         this.vx = Util.clamp(this.vx, -this.radius, +this.radius);
     };

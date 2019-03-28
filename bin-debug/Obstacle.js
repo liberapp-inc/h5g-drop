@@ -18,6 +18,7 @@ var Obstacle = (function (_super) {
         _this.animFrame = 0;
         Obstacle.obstacles.push(_this);
         _this.radius = r;
+        _this.color = randBool() ? OBSTACLE_COLOR : OBSTACLE_COLOR2;
         _this.setShape(x, y, _this.radius);
         return _this;
     }
@@ -34,7 +35,7 @@ var Obstacle = (function (_super) {
         else {
             this.shape.graphics.clear();
         }
-        this.shape.graphics.beginFill(OBSTACLE_COLOR);
+        this.shape.graphics.beginFill(this.color);
         this.shape.graphics.drawCircle(0, 0, radius);
         this.shape.graphics.endFill();
         this.shape.x = x;
@@ -43,7 +44,7 @@ var Obstacle = (function (_super) {
     Obstacle.prototype.update = function () {
         this.shape.y -= Player.I.scrollSpeed;
         this.scaleAnim();
-        if (this.shape.y + this.radius * 0.5 <= 0)
+        if (this.shape.y + this.radius <= 0)
             this.destroy();
     };
     Obstacle.prototype.scaleAnim = function () {

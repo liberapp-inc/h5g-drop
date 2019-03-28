@@ -5,7 +5,7 @@
 function rand():number { return Random.I.v(); }
 function randF( min:number, max:number ):number { return Random.I.f(min, max); }
 function randI( min:number, max:number ):number { return Random.I.i(min, max); }
-function randBool(){ Random.I.bool(); }
+function randBool():boolean { return Random.I.bool(); }
 
 class Random {
 
@@ -16,7 +16,7 @@ class Random {
     v():number{ return (this.next() & this.max) / (this.max + 1); }         // 0以上 1未満
     f(min:number, max:number) { return min + this.v() * (max - min); }      // min以上 max未満
     i(min:number, max:number) { return Math.floor( this.f(min, max) ); }    // min以上 max未満（整数）
-    bool():boolean { return (this.next() & 1) != 0; }
+    bool():boolean { return ( (this.next() & 1) != 0 ); }
 
     // XOR Shift
     

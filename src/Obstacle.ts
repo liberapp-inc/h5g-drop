@@ -5,6 +5,7 @@ class Obstacle extends GameObject{
 
     static obstacles:Obstacle[] = [];
     radius:number;
+    color:number;
     readonly animFrameMax = 8;
     animFrame:number = 0;
 
@@ -13,6 +14,8 @@ class Obstacle extends GameObject{
 
         Obstacle.obstacles.push(this);
         this.radius = r;
+        this.color = randBool() ? OBSTACLE_COLOR : OBSTACLE_COLOR2;
+
         this.setShape(x, y, this.radius);
     }
 
@@ -29,7 +32,7 @@ class Obstacle extends GameObject{
             this.shape.graphics.clear();
         }
         
-        this.shape.graphics.beginFill(OBSTACLE_COLOR);
+        this.shape.graphics.beginFill( this.color );
         this.shape.graphics.drawCircle(0, 0, radius);
         this.shape.graphics.endFill();
         this.shape.x = x;
@@ -41,7 +44,7 @@ class Obstacle extends GameObject{
 
         this.scaleAnim();
 
-        if( this.shape.y + this.radius *0.5 <= 0 )
+        if( this.shape.y + this.radius <= 0 )
             this.destroy();
     }
 

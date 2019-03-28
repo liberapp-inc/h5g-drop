@@ -10,10 +10,11 @@ const OBSTACLES_IN_HEIGHT = 10;
 const SAVE_KEY_BESTSCORE = "drop-bestScore";
 const SAVE_KEY_BESTTIME  = "drop-bestTime";     // + ステージ番号
 
-const BACK_COLOR = 0xF3FFFF;
-const FONT_COLOR = 0x00c0ff;
+const BACK_COLOR = 0xFfFfe8;    // index.htmlで設定
+const FONT_COLOR = 0x0080ff;
 const PLAYER_COLOR = 0x00f0ff;
-const OBSTACLE_COLOR = 0x0080ff;
+const OBSTACLE_COLOR = 0x1060ff;
+const OBSTACLE_COLOR2 = 0x5060ff;
 
 class Game {
 
