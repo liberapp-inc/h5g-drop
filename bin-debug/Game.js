@@ -12,9 +12,9 @@ var SAVE_KEY_BESTSCORE = "drop-bestScore";
 var SAVE_KEY_BESTTIME = "drop-bestTime"; // + ステージ番号
 var BACK_COLOR = 0xFfFfe8; // index.htmlで設定
 var FONT_COLOR = 0x0080ff;
-var PLAYER_COLOR = 0x00f0ff;
-var OBSTACLE_COLOR = 0x1060ff;
-var OBSTACLE_COLOR2 = 0x5060ff;
+var PLAYER_COLOR = 0x00f8ff;
+var OBSTACLE_COLOR = 0x2060ff;
+var OBSTACLE_COLOR2 = 0x6060ff;
 var Game = (function () {
     function Game() {
     }

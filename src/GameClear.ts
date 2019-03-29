@@ -4,7 +4,7 @@
 class GameClear extends GameObject{
 
     texts:egret.TextField[] = [];
-    newRecord:boolean = true;
+    newRecord:boolean = false;
 
     constructor() {
         super();
