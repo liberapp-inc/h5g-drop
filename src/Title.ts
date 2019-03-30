@@ -44,7 +44,7 @@ class Title extends GameObject{
         w *= Util.width;
         h *= Util.height;
         shape.graphics.beginFill(color);
-        shape.graphics.drawRect(-0.5*w, -0.5*h, w, h);
+        shape.graphics.drawRoundRect(-0.5*w, -0.5*h, w, h, w*0.2);
         shape.graphics.endFill();
         shape.touchEnabled = true;
         shape.x = x * Util.width;

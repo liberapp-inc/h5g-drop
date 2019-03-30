@@ -19,7 +19,7 @@ class FinishLine extends GameObject{
     update() {
         this.shape.y -= Player.I.scrollSpeed;
 
-        if( this.shape.y <= Player.I.shape.y ){
+        if( Player.I.state == Player.I.stateDrop && this.shape.y <= Player.I.shape.y ){
             new GameClear();
             Player.I.setStateNone();
         }
