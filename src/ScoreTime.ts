@@ -15,7 +15,7 @@ class ScoreTime extends GameObject{
 
         ScoreTime.I = this;
         this.frame = 0;
-        this.textTime = Util.newTextField("0.00Sec", Util.width / 22, FONT_COLOR, 0.5, 0.0, true, true);
+        this.textTime = Util.newTextField("0.00sec", Util.width / 22, FONT_COLOR, 0.5, 0.0, true, true);
         GameObject.display.addChild( this.textTime );
 
         this.setTextBest();
